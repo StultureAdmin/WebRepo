@@ -1,41 +1,37 @@
 import React, { useState } from "react"
-import { Card, Button, Alert } from "react-bootstrap"
-import { useAuth } from "../contexts/AuthContext"
-import { Link, useHistory } from "react-router-dom"
+import { AiOutlineHome ,AiOutlineUser} from 'react-icons/ai';
+import {BiSearch} from 'react-icons/bi'
+import { Card, Nav} from "react-bootstrap"
+import Profile from "./Profile";
+import Search from "./Search"
+import Home from "./Home";
+
 
 export default function Dashboard() {
-  const [error, setError] = useState("")
-  const { currentUser, logout } = useAuth()
-  const history = useHistory()
-
-  async function handleLogout() {
-    setError("")
-
-    try {
-      await logout()
-      history.push("/login")
-    } catch {
-      setError("Failed to log out")
-    }
-  }
-
+  const [setting, setSetting] = useState("profile")
   return (
     <>
       <Card>
-        <Card.Body>
-          <h2 className="text-center mb-4">Profile</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <strong>Email:</strong> {currentUser.email}
-          <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
-            Update Profile
-          </Link>
+        <Card.Body >
+          {setting=="profile" && <Profile/>}
+          {setting=="home" && <Home/>}
+          {setting=="search" && <Search/>}
         </Card.Body>
+        <Nav activeKey="/home" 
+             style={{justifyContent:"space-around"}}
+             onSelect={(selectedKey) => {setSetting(selectedKey)}}>
+            <Nav.Item>
+              <Nav.Link eventKey="home"><AiOutlineHome/></Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="search"><BiSearch/></Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link eventKey="profile"><AiOutlineUser/></Nav.Link>
+            </Nav.Item>
+          </Nav>
       </Card>
-      <div className="w-100 text-center mt-2">
-        <Button variant="link" onClick={handleLogout}>
-          Log Out
-        </Button>
-      </div>
+      
     </>
   )
 }

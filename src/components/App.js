@@ -6,18 +6,21 @@ import { AuthProvider } from "../contexts/AuthContext"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import Dashboard from "./Dashboard"
 import Login from "./Login"
-import PrivateRoute from "./PrivateRoute"
+import {Provider} from 'react-redux'
+import store from "../redux/store"
+import jwtDecode from 'jwt-decode'
 import ForgotPassword from "./ForgotPassword"
 import UpdateProfile from "./UpdateProfile"
-
+import Upload from "./Upload"
+import PrivateRoute from "./PrivateRoute";
+import AuthRoute from "../util/AuthRoute";
 const gradients = [
   ["#090041", "#680031"],
   ["#090041", "#680031"],
 ];
-
 function App() {
   return (
-    <div>
+    <Provider store={store}>
       <Gradient
         gradients={ gradients } // required
         property="background"
@@ -32,18 +35,18 @@ function App() {
         <Router>
           <AuthProvider>
             <Switch>
-              <PrivateRoute exact path="/" component={Dashboard} />
-              <PrivateRoute path="/update-profile" component={UpdateProfile} />
-              <Route path="/signup" component={Signup} />
-              <Route path="/login" component={Login} />
-              <Route path="/forgot-password" component={ForgotPassword} />
+              <AuthRoute exact path="/login" component={Login}/>
+              <AuthRoute exact path="/signup" component={Signup}/>
+              <PrivateRoute path="/update-profile" component={UpdateProfile}/>
+              <PrivateRoute exact path="/upload" component={Upload}/>
+              <PrivateRoute path="/" component={Dashboard}/>
             </Switch>
           </AuthProvider>
         </Router>
       </div>
     </Container>
     </Gradient>
-    </div>
+    </Provider>
   )
 }
 
