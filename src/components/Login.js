@@ -27,7 +27,7 @@ export default function Login() {
 
   return (
     <>
-      <Card>
+      <Card style={{background:"none", border:"none"}}>
         <Card.Body>
           <h2 className="text-center mb-4">
           <img src={logo} style={{width:92}}/>
@@ -36,25 +36,20 @@ export default function Login() {
           {error && <Alert variant="danger">{error}</Alert>} 
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
+              <Form.Control type="email" ref={emailRef} required  placeholder="player-id"  style={{textAlign:"center"}}/>
             </Form.Group>
             <Form.Group id="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" ref={passwordRef} required />
+              <Form.Control type="password" ref={passwordRef} required placeholder="password" style={{textAlign:"center"}}/>
             </Form.Group>
-            <Button disabled={loading} className="w-100" type="submit">
-            {loading ? <Spinner/>:"Login"}
+            <Button disabled={loading} className="w-100" type="submit" style={{background:"#e9004f"}}>
+            {loading ? <Spinner/>:"Start"}
             </Button>
             <Spinner/>
           </Form>
-          <div className="w-100 text-center mt-3">
-            <Link to="/forgot-password">Forgot Password?</Link>
-          </div>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2" style={{color:"white"}}>
-        Need an account? <Link to="/signup">Sign Up</Link>
+        Create a new account ? <Link to="/signup">Sign Up</Link>
       </div>
 
     </>

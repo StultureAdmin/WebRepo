@@ -15,23 +15,23 @@ import Upload from "./Upload"
 import PrivateRoute from "./PrivateRoute";
 import AuthRoute from "../util/AuthRoute";
 const gradients = [
-  ["#090041", "#680031"],
-  ["#090041", "#680031"],
+  ["#090041", "#0C0024"],
+  ["#090041", "#0C0024"],
 ];
 function App() {
   return (
     <Provider store={store}>
       <Gradient
-        gradients={ gradients } // required
+        gradients={ gradients } 
         property="background"
         duration={ 3000 }
         angle="45deg"
       >
     <Container
-      className="d-flex align-items-center justify-content-center w-100"
-      style={{ minHeight: "100vh"}}
+      className="d-flex align-items-center justify-content-center"
+      style={{ minHeight: "100vh",padding:"0px"}}
     >
-      <div className="w-100" style={{ maxWidth: "400px"}}> 
+      <div> 
         <Router>
           <AuthProvider>
             <Switch>
