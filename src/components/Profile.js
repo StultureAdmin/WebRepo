@@ -1,5 +1,6 @@
 import React ,{useState,useEffect} from 'react'
 import { AiFillCamera} from 'react-icons/ai';
+import {FiSettings} from 'react-icons/fi';
 import { Link, useHistory } from "react-router-dom"
 import { CircularProgressbarWithChildren ,buildStyles} from 'react-circular-progressbar';
 import { Alert} from "react-bootstrap"
@@ -7,7 +8,7 @@ import {useSelector,useDispatch} from 'react-redux'
 
 import { uploadImage } from '../redux/actions/userActions'
 
-export default function Profile() {
+export default function Profile({authenticated}) {
   const [error,setError] = useState("")
    const dispatch = useDispatch()
     const handleEditPicture = ()=>{
@@ -21,12 +22,19 @@ export default function Profile() {
       formData.append('image',image,image.name);
       dispatch(uploadImage(formData))
     }
-    const credentials = useSelector(state=>state.user.credentials)
+    let credentials = useSelector(state=>state.user.credentials)
+    const requestedCredentials  = useSelector(state=>state.user.requestedCredentials)
+    if (authenticated===false && requestedCredentials != null){
+      credentials = requestedCredentials.credentials
+    }
     return (
         <div style={{backgroundColor:"#02013D", color:"#FF0054", height:"95vh", padding:"20px", textAlign:"center"}}>
-          <h2 className="text-center mb-4">{credentials.handle}</h2>
+          <h2 className="text-center mb-4">{credentials != null && credentials.handle}</h2>
+          {authenticated && <div style={{textAlign:"right"}}><Link to="/update-profile">
+          <FiSettings/>
+          </Link><span></span></div>}
              {error && <Alert variant="danger">{error}</Alert>}
-          {credentials.imageUrl !=null && <>
+          {credentials != null && credentials.imageUrl !=null && <>
             <div style={{textAlign:"center",alignItems:"center"}}>
               <div style={{width:"196px",margin:"auto"}}>
                 <CircularProgressbarWithChildren  value={20} styles={buildStyles({
@@ -37,7 +45,7 @@ export default function Profile() {
                     pathColor: '#ff0052',
                 })} >
                 <div style={{borderRadius:"12px"}}>
-                  <img src={credentials.imageUrl} style={{width:"166px", borderRadius:"50%"}}/>
+                  <img src={credentials != null && credentials.imageUrl} style={{width:"166px", borderRadius:"50%"}}/>
                 </div>
                 </CircularProgressbarWithChildren>
               </div>
@@ -45,20 +53,35 @@ export default function Profile() {
               <AiFillCamera onClick={handleEditPicture}/>
             </div>
           </>}
-          {credentials.points} Points<br/>
-          {credentials.bio !=null && <>
+          {credentials != null && credentials.points} Points<br/>
+          {credentials != null && credentials.bio !=null && <>
           <strong>"{credentials!=null && credentials.bio}"</strong><br/>
-          <strong>College:</strong> {credentials!=null && credentials.college}<br/>
           </>
           }
-          {credentials.email !=null && <>
-          <strong>Handle:</strong> {credentials!=null && credentials.handle}<br/>
-          <strong>Email:</strong> {credentials!=null && credentials.email}
+          <>
+          <div style={{alignItems:"center"}}>
+          <table style={{marginLeft:"auto", marginRight:"auto" , color:"orange", width:"80%" , marginTop:"20px", marginBottom:"20px"}}>
+            <tr>
+            <th>Skills</th>
+            <th>Hobbies</th>
+          </tr>
+          <tr>
+           </tr>
+          <tr>
+          <td colSpan={2}>TBA</td>
+          </tr>
+          <tr>
+          <th>Education</th>
+          <th>Language</th>
+          </tr>
+        </table>
+        <h5> CONTACT </h5>
+        </div>
+          </>
+          {credentials != null && credentials.email !=null && <>
+          {credentials!=null && credentials.email}
           </>
           }
-          <Link to="/update-profile" className="btn btn-primary w-100 mt-3">
-           Update Profile
-          </Link>
           <div className="w-100 text-center mt-2">
             {/* <Button variant="link" onClick={handleLogout}>
               Log Out

@@ -7,21 +7,27 @@ import { useDispatch } from "react-redux";
 import Profile from "./Profile";
 import Search from "./Search"
 import Home from "./Home";
+import { getListOfUsers } from "../redux/actions/usersAction";
 
 
 export default function Dashboard() {
   const dispatch = useDispatch()
   useEffect(()=>{
     dispatch(getCompetionList())
+    dispatch(getListOfUsers())
   },[])
   const [setting, setSetting] = useState("profile")
   return (
     <div>
-      <Card style={{backgroundColor:"#151515", color:"white",height:"100vh", width:"100vw"}}>
+      <Card style={{backgroundColor:"white", 
+                    color:"white",
+                    height:"100vh",
+                    width:"100vw" }}>
         <Card.Body style={{padding:"0px"}}>
-          {setting=="profile" && <Profile/>}
+          {setting=="profile" && <Profile authenticated={true}/>}
+          {setting=="reqProfile" && <Profile authenticated={false}/>}
           {setting=="home" && <Home/>}
-          {setting=="search" && <Search/>}
+          {setting=="search" && <Search setSetting={setSetting}/>}
         </Card.Body>
         <Nav activeKey="/home" 
              style={{justifyContent:"space-around", backgroundColor:"white"}}

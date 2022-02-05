@@ -1,4 +1,4 @@
-import {SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_UI ,LOADING_USER} from '../type';
+import {SET_USER, SET_ERRORS, CLEAR_ERRORS,GET_PARTICULAR_USER,  LOADING_UI ,LOADING_USER} from '../type';
 import axios from "axios"
 
 export const loginUser = (userData, history) => (dispatch)=> {
@@ -31,6 +31,22 @@ export const editUserDetails = (userDetails) => (dispatch) => {
       })
       .catch((err) => console.log(err));
   };
+
+export const getRequestedUser = (requestedUser) => (dispatch) => {
+    dispatch({ type: LOADING_USER });
+    console.log(requestedUser)
+    axios
+      .post('/user/handle', requestedUser)
+      .then(res => {
+        console.log(res)
+        dispatch({
+          type:GET_PARTICULAR_USER,
+          payload: res.data
+        });
+      })
+      .catch((err) => console.log(err));
+  };
+
 
 export const getUserData = () => (dispatch) => {
     axios.get('/user')

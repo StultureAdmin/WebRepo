@@ -1,8 +1,9 @@
-import {SET_USER, SET_ERRORS, CLEAR_ERRORS, LOADING_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED } from '../type';
+import {SET_USER, SET_ERRORS, GET_PARTICULAR_USER, CLEAR_ERRORS, LOADING_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED } from '../type';
 
 const initialState = {
     autheticated: false,
     credentials: {},
+    requestedCredentials: {},
 };
 
 export default function(state=initialState,action){
@@ -24,6 +25,11 @@ export default function(state=initialState,action){
                 authenticated:true,
                 ...action.payload
             }
+        case GET_PARTICULAR_USER:
+            return {
+                ...state,
+                requestedCredentials:action.payload
+            }    
         default:
             return state
     }
